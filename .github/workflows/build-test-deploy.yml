@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - main
+  #on le met au cas ou l'action du dessus l'implique
+  pull_request:
+    branches:
+      - main
 
 #variable d'environnement
 env: 
@@ -12,6 +16,7 @@ env:
 jobs:
   main_job:
     runs-on: ubuntu-latest
+    
     steps:
       #récupère le code source
       - name: Checkout
@@ -19,4 +24,9 @@ jobs:
       #mise en place de Java
       - name: Setup Java JDK
         uses: actions/setup-java@v4.5.0
-       
+        with:
+          java-version: 17
+          # Java distribution. See the list of supported distributions in README file
+          distribution: temurin
+      - name: Build project with Maven
+        run: mvn clean package -DskipTests
