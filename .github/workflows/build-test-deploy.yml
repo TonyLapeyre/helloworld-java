@@ -39,4 +39,30 @@ jobs:
         run: mvn clean package -DskipTests
         env:
           MAVEN_OPTS: "-Dmaven.repo.local=${{ github.workspace }}/.m2/repository"
+
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      #récupère le code source
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+      #mise en place de Java
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4.5.0
+        with:
+          java-version: 17
+          # Java distribution. See the list of supported distributions in README file
+          distribution: temurin
+      - name: Cache
+        uses: actions/cache@v4.1.2
+        with:
+          # A list of files, directories, and wildcard patterns to cache and restore
+          path: ${{ github.workspace }}/.m2/repository
+          # An explicit key for restoring and saving the cache
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+      - name: Build project with Maven
+        run: mvn test
+        env:
+          MAVEN_OPTS: "-Dmaven.repo.local=${{ github.workspace }}/.m2/repository"
       
