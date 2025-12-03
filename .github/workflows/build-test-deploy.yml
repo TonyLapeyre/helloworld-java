@@ -52,6 +52,13 @@ jobs:
           key: cache-dependances
       - name: build project with Maven
         run: mvn clean package -DskipTests
-      
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v5.0.0
+        with:
+          # Artifact name
+          name: helloworld-{{env.PROJECT_VERSION}}.jar
+          # A file, directory or wildcard pattern that describes what to upload
+          path: target/helloworld-1.0-SNAPSHOT.jar
+          # The desired behavior if no files are found using the provided path.
           
         
